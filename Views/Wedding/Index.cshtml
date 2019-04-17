@@ -1,0 +1,64 @@
+﻿@using Microsoft.AspNetCore.Http;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Dashboard</title>
+</head>
+<body>
+    @model List<Wedding>
+    <h1>Welcome to Wedding Planner!</h1>
+    <a style="float: right;" href="/logout">Logout</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+            <th scope="col">Wedding</th>
+            <th scope="col">Date</th>
+            <th scope="col">Guests</th>
+            <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var wedding in Model)
+            {
+                <tr>
+                    <td><a href="/weddings/@wedding.WeddingId">@wedding.WedderOne & @wedding.WedderTwo</a></td>
+                    <td>@wedding.Date.ToString("MM/dd/yyyy")</td>
+                    <td>@wedding.Attendees.Count</td>
+                    <td>
+                        @{
+                            string Id = @Context.Session.GetString("UserID");
+                            int uid = Convert.ToInt32(Id);
+                            if(wedding.CreatorId == uid)
+                            {
+                                <a href="/delete/@wedding.WeddingId"><button>Delete</button></a>
+                            }
+                            
+                            bool contained = false;
+                            foreach(var g in wedding.Attendees)
+                            {
+                                if(g.UserId == uid)
+                                {
+                                    contained = true;
+                                }
+                            }
+                            if(contained == true && wedding.CreatorId != uid)
+                            {
+                                <a href="/unrsvp/@wedding.WeddingId"><button>Un-RSVP</button></a>
+                            }
+                            if(contained == false && wedding.CreatorId != uid)
+                            {
+                                <a href="/rsvp/@wedding.WeddingId"><button>RSVP</button></a>
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a href="/new"><Button class="btn btn-primary">Add New Wedding</Button></a>
+</body>
+</html>

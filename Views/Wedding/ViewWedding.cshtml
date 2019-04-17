@@ -1,0 +1,26 @@
+@using Microsoft.AspNetCore.Http;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <a style="float: right;" href="/Dashboard">Dashboard</a>
+    <br>
+    <br>
+    <a style="float: right;" href="/logout">Logout</a>
+    @model Wedding
+    <h1>@Model.WedderOne & @Model.WedderTwo</h1>
+    <h3>Date: @Model.Date.ToString("MM/dd/yyyy")<h3>
+    <h3>Guests: </h3>
+    <ul>
+        @foreach (var guest in Model.Attendees)
+        {
+            <li>@guest.User.FirstName @guest.User.LastName</li>
+        }
+    </ul>
+</body>
+</html>

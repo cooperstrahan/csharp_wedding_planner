@@ -1,0 +1,53 @@
+@using Microsoft.AspNetCore.Http;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h3>New Wedding!</h3>
+    <a style="float: right;" href="/Dashboard">Dashboard</a>
+    <br>
+    <br>
+    <a style="float: right;" href="/logout">Logout</a>
+    @model AddWedding
+    <form action="/new" method="post">
+        <div class="form-group">
+            <span asp-validation-for="wedOne"></span>
+            <label asp-for="wedOne">Wedder One: </label>
+            <input asp-for="wedOne">
+        </div>
+
+        <div class="form-group">
+            <span asp-validation-for="wedTwo"></span>
+            <label asp-for="wedTwo">Wedder Two: </label>
+            <input asp-for="wedTwo">
+        </div>
+
+        <div class="form-group">
+            <span asp-validation-for="wedDate"></span>
+            <label asp-for="wedDate">Date: </label>
+            <input type="date" asp-for="wedDate">
+        </div>
+
+        <div class="form-group">
+            <span asp-validation-for="wedAddress"></span>
+            <label asp-for="wedAddress">Address: </label>
+            <input asp-for="wedAddress">
+        </div>
+        
+        @{
+        string Id = @Context.Session.GetString("UserID");
+        int UserId = Convert.ToInt32(Id);
+       
+        <input type="hidden" asp-for="wedCreatorId" value="@UserId">
+        }
+        
+
+        <button class="btn btn-primary">New Wedding</button>
+    </form>
+</body>
+</html>
